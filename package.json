@@ -1,5 +1,5 @@
 {
-  "name": "ph-health-care",
+  "name": "ph-health-care-api",
   "version": "1.0.0",
   "description": "",
   "license": "ISC",
@@ -19,6 +19,7 @@
     "better-auth": "^1.4.19",
     "dotenv": "^17.3.1",
     "express": "^5.2.1",
+    "http-status": "^2.1.0",
     "pg": "^8.19.0"
   },
   "devDependencies": {
