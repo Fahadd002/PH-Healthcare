@@ -11,3 +11,8 @@ enum UserStatus {
     SUSPENDED
     DELETED
 }
+
+enum Gender {
+    MALE
+    FEMALE
+}
