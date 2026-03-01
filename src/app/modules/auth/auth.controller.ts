@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { catchAsync } from "../../../shared/catchAsync";
-import { sendResponse } from "../../../shared/sendResponse";
+import { catchAsync } from "../../shared/catchAsync";
+import { sendResponse } from "../../shared/sendResponse";
 import { AuthService } from "./auth.service";
 import status from "http-status";
 

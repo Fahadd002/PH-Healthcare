@@ -1,5 +1,5 @@
 import express, { Application, Request, Response } from "express";
-import { IndexRoutes } from "./shared/routes";
+import { IndexRoutes } from "./app/shared/routes";
 import { globalErrorHandler } from "./app/middleware/globalErrorHandler";
 import { notFound } from "./app/middleware/notFound";
 
