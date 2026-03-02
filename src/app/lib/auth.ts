@@ -35,15 +35,24 @@ export const auth = betterAuth({
             isDeleted: {
                 type: "boolean",
                 required: true,
-                defaultValue: false
+                defaultValue: false 
             },
 
             deletedAt: {
                 type: "date",
                 required: false,
                 defaultValue: null
-            },
+            }
         }
     },
+
+   session: {
+        expiresIn: 60 * 60 * 60 * 24, // 1 day in seconds
+        updateAge: 60 * 60 * 60 * 24, // 1 day in seconds
+        cookieCache: {
+            enabled: true,
+            maxAge: 60 * 60 * 60 * 24, // 1 day in seconds
+        }
+    }
 
 });
