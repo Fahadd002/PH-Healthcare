@@ -3,8 +3,8 @@ import { Role, Specialty } from "../../../generated/prisma/client";
 import { envVars } from "../../config/env";
 import { auth } from "../../lib/auth";
 import { prisma } from "../../lib/prisma";
-import { ICreateDoctorPayload } from "../doctor/doctor.interface";
 import AppError from "../../errorHelpers/AppError";
+import { ICreateDoctorPayload } from "./user.interface";
 
 const createDoctor = async (payload: ICreateDoctorPayload) => {
     const specialties: Specialty[] = [];
