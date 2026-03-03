@@ -4,6 +4,8 @@ import { sendResponse } from "../../shared/sendResponse";
 import { AuthService } from "./auth.service";
 import status from "http-status";
 import { tokenUtils } from "../../utils/token";
+import AppError from "../../errorHelpers/AppError";
+
 
 const registerPatient = catchAsync(
     async (req: Request, res: Response) => {
@@ -14,7 +16,7 @@ const registerPatient = catchAsync(
 
         tokenUtils.setAccessTokenCookie(res, accessToken);
         tokenUtils.setRefreshTokenCookie(res, refreshToken);
-        tokenUtils.betterAuthSetSessionCookie(res, token as string);
+        tokenUtils.setBetterAuthSessionCookie(res, token as string);
 
         sendResponse(res, {
             httpStatusCode: status.CREATED,
@@ -39,7 +41,7 @@ const loginUser = catchAsync(
 
         tokenUtils.setAccessTokenCookie(res, accessToken);
         tokenUtils.setRefreshTokenCookie(res, refreshToken);
-        tokenUtils.betterAuthSetSessionCookie(res, token);
+        tokenUtils.setBetterAuthSessionCookie(res, token);
 
         sendResponse(res, {
             httpStatusCode: status.OK,
@@ -56,7 +58,51 @@ const loginUser = catchAsync(
     }
 )
 
+const getMe = catchAsync(
+     async (req: Request, res: Response) => {
+        const user = req.user;
+        const result = await AuthService.getMe(user);
+        sendResponse(res, {
+            httpStatusCode: status.OK,
+            success: true,
+            message: "User fetched successfully",
+            data: result,
+        })
+    }
+)
+
+const getNewToken = catchAsync(
+    async (req: Request, res: Response) => {
+        const refreshToken = req.cookies.refreshToken;
+        const betterAuthSessionToken = req.cookies["better-auth.session_token"];
+        if (!refreshToken) {
+            throw new AppError(status.UNAUTHORIZED, "Refresh token is missing");
+        }
+        const result = await AuthService.getNewToken(refreshToken, betterAuthSessionToken);
+
+        const { accessToken, refreshToken: newRefreshToken, sessionToken } = result;
+
+        tokenUtils.setAccessTokenCookie(res, accessToken);
+        tokenUtils.setRefreshTokenCookie(res, newRefreshToken);
+        tokenUtils.setBetterAuthSessionCookie(res, sessionToken);
+
+        sendResponse(res, {
+            httpStatusCode: status.OK,
+            success: true,
+            message: "New tokens generated successfully",
+            data: {
+                accessToken,
+                refreshToken: newRefreshToken,
+                sessionToken,
+            },
+        });
+    }
+)
+
+
 export const AuthController = {
     registerPatient,
     loginUser,
+    getMe,
+    getNewToken
 };
