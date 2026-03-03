@@ -5,6 +5,7 @@ import { AuthService } from "./auth.service";
 import status from "http-status";
 import { tokenUtils } from "../../utils/token";
 import AppError from "../../errorHelpers/AppError";
+import { cookieUtils } from "../../utils/cookie";
 
 
 const registerPatient = catchAsync(
@@ -53,7 +54,6 @@ const loginUser = catchAsync(
                 refreshToken,
                 ...rest,
             },
-
         })
     }
 )
@@ -97,12 +97,64 @@ const getNewToken = catchAsync(
             },
         });
     }
+);
+
+const changePassword = catchAsync(
+    async (req: Request, res: Response) => {
+        const payload = req.body;
+        const betterAuthSessionToken = req.cookies["better-auth.session_token"];
+
+        const result = await AuthService.changePassword(payload, betterAuthSessionToken);
+
+        const { accessToken, refreshToken, token } = result;
+
+        tokenUtils.setAccessTokenCookie(res, accessToken);
+        tokenUtils.setRefreshTokenCookie(res, refreshToken);
+        tokenUtils.setBetterAuthSessionCookie(res, token as string);
+
+        sendResponse(res, {
+            httpStatusCode: status.OK,
+            success: true,
+            message: "Password changed successfully",
+            data: result,
+        });
+    }
 )
 
+const logoutUser = catchAsync(
+    async (req: Request, res: Response) => {
+        const betterAuthSessionToken = req.cookies["better-auth.session_token"];
+        const result = await AuthService.logoutUser(betterAuthSessionToken);
+        cookieUtils.clearCookie(res, 'accessToken', {
+            httpOnly: true,
+            secure: true,
+            sameSite: "none",
+        });
+        cookieUtils.clearCookie(res, 'refreshToken', {
+            httpOnly: true,
+            secure: true,
+            sameSite: "none",
+        });
+        cookieUtils.clearCookie(res, 'better-auth.session_token', {
+            httpOnly: true,
+            secure: true,
+            sameSite: "none",
+        });
+
+        sendResponse(res, {
+            httpStatusCode: status.OK,
+            success: true,
+            message: "User logged out successfully",
+            data: result,
+        });
+    }
+)
 
 export const AuthController = {
     registerPatient,
     loginUser,
     getMe,
-    getNewToken
+    getNewToken,
+    changePassword,
+    logoutUser
 };
