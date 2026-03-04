@@ -59,7 +59,7 @@ const loginUser = catchAsync(
 )
 
 const getMe = catchAsync(
-     async (req: Request, res: Response) => {
+    async (req: Request, res: Response) => {
         const user = req.user;
         const result = await AuthService.getMe(user);
         sendResponse(res, {
@@ -150,11 +150,58 @@ const logoutUser = catchAsync(
     }
 )
 
+const verifyEmail = catchAsync(
+    async (req: Request, res: Response) => {
+        const { email, otp } = req.body;
+
+        await AuthService.varifyEmail(email, otp);
+
+        sendResponse(res, {
+            httpStatusCode: status.OK,
+            success: true,
+            message: "Email verified successfully",
+        });
+    }
+);
+
+const forgetPassword = catchAsync(
+
+    async (req: Request, res: Response) => {
+        const { email } = req.body;
+
+        await AuthService.forgetPassword(email);
+
+        sendResponse(res, {
+            httpStatusCode: status.OK,
+            success: true,
+            message: "A password reset OTP has been sent to your email address. Please check your inbox.",
+        });
+    }
+)
+
+const resetPassword = catchAsync(
+
+    async (req: Request, res: Response) => {
+        const { email, otp, newPassword } = req.body;
+
+        await AuthService.resetPassword(email, otp, newPassword);
+
+        sendResponse(res, {
+            httpStatusCode: status.OK,
+            success: true,
+            message: "Your password has been reset successfully. You can now log in with your new password.",
+        });
+    }
+)
+
 export const AuthController = {
     registerPatient,
     loginUser,
     getMe,
     getNewToken,
     changePassword,
-    logoutUser
+    logoutUser,
+    verifyEmail,
+    forgetPassword,
+    resetPassword
 };
