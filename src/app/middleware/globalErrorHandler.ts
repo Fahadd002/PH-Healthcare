@@ -56,8 +56,7 @@ export const globalErrorHandler = (err: any, req: Request, res: Response, next: 
                 message: err.message
             }
         ]
-    }
-    else if (err instanceof Error) {
+    } else if (err instanceof Error) {
         statusCode = status.INTERNAL_SERVER_ERROR;
         message = err.message
         stack = err.stack;
