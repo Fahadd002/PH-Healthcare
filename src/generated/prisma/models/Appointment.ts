@@ -206,7 +206,7 @@ export type AppointmentWhereInput = {
   OR?: Prisma.AppointmentWhereInput[]
   NOT?: Prisma.AppointmentWhereInput | Prisma.AppointmentWhereInput[]
   id?: Prisma.StringFilter<"Appointment"> | string
-  videoCallingId?: Prisma.StringFilter<"Appointment"> | string
+  videoCallingId?: Prisma.UuidFilter<"Appointment"> | string
   status?: Prisma.EnumAppointmentStatusFilter<"Appointment"> | $Enums.AppointmentStatus
   paymentStatus?: Prisma.EnumPaymentStatusFilter<"Appointment"> | $Enums.PaymentStatus
   createdAt?: Prisma.DateTimeFilter<"Appointment"> | Date | string
@@ -242,10 +242,10 @@ export type AppointmentOrderByWithRelationInput = {
 
 export type AppointmentWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  videoCallingId?: string
   AND?: Prisma.AppointmentWhereInput | Prisma.AppointmentWhereInput[]
   OR?: Prisma.AppointmentWhereInput[]
   NOT?: Prisma.AppointmentWhereInput | Prisma.AppointmentWhereInput[]
-  videoCallingId?: Prisma.StringFilter<"Appointment"> | string
   status?: Prisma.EnumAppointmentStatusFilter<"Appointment"> | $Enums.AppointmentStatus
   paymentStatus?: Prisma.EnumPaymentStatusFilter<"Appointment"> | $Enums.PaymentStatus
   createdAt?: Prisma.DateTimeFilter<"Appointment"> | Date | string
@@ -259,7 +259,7 @@ export type AppointmentWhereUniqueInput = Prisma.AtLeast<{
   prescription?: Prisma.XOR<Prisma.PrescriptionNullableScalarRelationFilter, Prisma.PrescriptionWhereInput> | null
   review?: Prisma.XOR<Prisma.ReviewNullableScalarRelationFilter, Prisma.ReviewWhereInput> | null
   payment?: Prisma.XOR<Prisma.PaymentNullableScalarRelationFilter, Prisma.PaymentWhereInput> | null
-}, "id">
+}, "id" | "videoCallingId">
 
 export type AppointmentOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -281,7 +281,7 @@ export type AppointmentScalarWhereWithAggregatesInput = {
   OR?: Prisma.AppointmentScalarWhereWithAggregatesInput[]
   NOT?: Prisma.AppointmentScalarWhereWithAggregatesInput | Prisma.AppointmentScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Appointment"> | string
-  videoCallingId?: Prisma.StringWithAggregatesFilter<"Appointment"> | string
+  videoCallingId?: Prisma.UuidWithAggregatesFilter<"Appointment"> | string
   status?: Prisma.EnumAppointmentStatusWithAggregatesFilter<"Appointment"> | $Enums.AppointmentStatus
   paymentStatus?: Prisma.EnumPaymentStatusWithAggregatesFilter<"Appointment"> | $Enums.PaymentStatus
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Appointment"> | Date | string
@@ -670,7 +670,7 @@ export type AppointmentScalarWhereInput = {
   OR?: Prisma.AppointmentScalarWhereInput[]
   NOT?: Prisma.AppointmentScalarWhereInput | Prisma.AppointmentScalarWhereInput[]
   id?: Prisma.StringFilter<"Appointment"> | string
-  videoCallingId?: Prisma.StringFilter<"Appointment"> | string
+  videoCallingId?: Prisma.UuidFilter<"Appointment"> | string
   status?: Prisma.EnumAppointmentStatusFilter<"Appointment"> | $Enums.AppointmentStatus
   paymentStatus?: Prisma.EnumPaymentStatusFilter<"Appointment"> | $Enums.PaymentStatus
   createdAt?: Prisma.DateTimeFilter<"Appointment"> | Date | string
